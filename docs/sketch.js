@@ -1,5 +1,6 @@
 let springSound;
 let musicBox;
+//let song;
 let isUserStarted = false;
 let a = 0;
 let cnv;
@@ -10,15 +11,17 @@ let speed = 200;
 function preload() {
   springSound = loadSound('spring.mp3');
   musicBox = loadSound('musicbox.mp3');
+//  song = loadSound('spring.mp3');
 }
 
 function setup() {
   // document.getElementById('main').innerHTML = new Array(1000).fill(0).map((d,i) => `${i+1}行目…………………………`).join('<br />');
   cnv = createCanvas(window.innerWidth, window.innerHeight);
+  //createCanvas(640, 480);
   rectMode(CENTER);
   colorMode(HSB, 360, 100, 100);
+  //musicBox.play();
   loop();
-  musicBox.play();
 }
 
 
@@ -29,6 +32,7 @@ function draw() {
   let scrollY = window.scrollY;
   Y = floor(scrollY);
 
+  // mySound.play();
   let brightness = 100 - constrain(scrollY / 100, 0, 60);
   //background(200, 20, brightness);
   background(255);
@@ -72,9 +76,9 @@ function draw() {
     
     //background(255);
   }
-  // if(u <= 0) {
-  //   musicBox.stop();
-  // }
+  if(u <= 0) {
+    musicBox.stop();
+  }
   if(u <= 400) {
     
     musicBox.rate(u/400);
@@ -89,7 +93,6 @@ function mouseClicked(){
   print('a');
   backsound();
   u = Y;
-   
 }
 
 function backsound() {
@@ -97,10 +100,8 @@ function backsound() {
   if(musicBox.isPlaying() == false){
     musicBox.rate(1);
     musicBox.play();
-  }
-  // if(musicBox.isPlaying() == true) {
-  //   musicBox.stop();
-  // }
+    
+  }  
   
 }
 
