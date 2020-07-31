@@ -1,0 +1,10 @@
+canvas {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: -1;
+}
+#main {
+  min-height: 9999px;
+  line-height: 200%;
+}
