@@ -12,11 +12,11 @@ let alpha = 0;
 let size;
 
 function preload() {
-  springSound = loadSound('spring.mp3');
-  musicBox = loadSound('musicbox.mp3');
+  springSound = loadSound('mp3/spring.mp3');
+  musicBox = loadSound('mp3/musicbox.mp3');
 
   for (var i = 0; i <62; i++){
-      img[i] = loadImage('./image/img' + [i] + '.jpg');
+      img[i] = loadImage('image/img' + [i] + '.jpg');
   }
 }
 
@@ -85,7 +85,6 @@ function playMusicSound() {
   if (volume > 0) {
     musicBox.amp(volume);
     if(musicBox.isPlaying() == false){
-      
       musicBox.play();
     }
   } else if(volume <= 0){
@@ -104,7 +103,7 @@ function comapare() {
   if (Y <= comparisonY && Y > 0) {
     u = u-1;
     if(u <= 0) {
-      u = 600;
+      u = 0;
     }
     //print(u);
     window.scrollTo(0,u+600);
@@ -115,7 +114,7 @@ function comapare() {
     springSound.stop();
   } else if (Y > comparisonY){
     u = Y;
-    volume -= 0.01;
+    volume -= 0.03;
     if (volume <= 0) {
       volume = 0;
     }
