@@ -8,16 +8,25 @@ let volume = 0;
 
 let Ytop;
 let img = [];
+let catimg = [];
 let alpha = 0;
 let size;
+let n = 0;
+
+let light;
 
 function preload() {
   springSound = loadSound('mp3/spring.mp3');
   musicBox = loadSound('mp3/musicbox.mp3');
 
   for (var i = 0; i <62; i++){
-      img[i] = loadImage('image/img' + [i] + '.jpg');
+      img[i] = loadImage('image/orgel/img' + [i] + '-min.jpg');
   }
+  for (var i = 0; i < 20; i++) {
+    catimg[i] = loadImage('image/cat2/'+[i+1] +'-min.png');
+  }
+  light = loadImage('image/light.png');
+  //catimg[0] = loadImage('image/cat/1.png');
 }
 
 function touchStarted() {
@@ -26,11 +35,14 @@ function touchStarted() {
 
 function setup() {
   cnv = createCanvas(window.innerWidth, window.innerHeight);
-
+  
+  
   imageMode(CENTER);
   image(img[0], window.innerWidth/2, window.innerHeight/2 - window.innerWidth*0.1, window.innerWidth, window.innerWidth/1.8);
   loop();
   setTimeout(setComparison,30);
+
+  
 }
 
 
@@ -47,9 +59,10 @@ function draw() {
   for( var i = 0; i <62; i++) {
     if(Ytop >= i*10) {
      image(img[i], w/2, h/2- w*0.1, size, size/1.8);
+     //filter(BLUR, 0);
     }
   }
-  print(Ytop);
+  //print(Ytop);
 
   if ( Ytop >= 230 ){
     alpha = Ytop - 230;
@@ -74,6 +87,19 @@ function draw() {
   if (scrollY >=600) {
     scrollMain();
   }
+
+  if (Y >0){  
+    n = Y%20;
+    print(n);
+    background(0);
+    
+    //image(img[0], w/2, h/2- w*0.1, w, w/1.8);
+    // image(light, w/2, h-w/8, w/2, w/2);
+    // image(catimg[n], w/2, h-w/8, w/3, w/3);
+    image(light, w/2, h/2, w/2, w/2);
+    image(catimg[n], w/2, h/2, w/4, w/4);
+  }
+  // image(catimg[20], w/2, h/2 - w*0.1, w/4, w/4);
 }
 
 function scrollMain() {
@@ -101,7 +127,7 @@ function comapare() {
   // volume++;
   //print(volume);
   if (Y <= comparisonY && Y > 0) {
-    u = u-1;
+    u = u-0.5;
     if(u <= 0) {
       u = 0;
     }
