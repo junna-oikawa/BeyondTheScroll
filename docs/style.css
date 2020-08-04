@@ -1,10 +1,81 @@
+/* スクロールの幅の設定 */
+::-webkit-scrollbar {
+  width: 3vw;
+  height: 5vw;
+}
+
+/* スクロールの背景の設定 */
+::-webkit-scrollbar-track {
+  /* border-radius: 5px; */
+  box-shadow: 10vw 10vw 5vw rgba(255, 255, 255, 0) inset;
+}
+
+/* スクロールのつまみ部分の設定 */
+::-webkit-scrollbar-thumb {
+  border-radius: 0.5vw;
+  background: linear-gradient(to bottom, #8d7241 0%,#f7ce18b4 25%,#fefff3 50%,#bd9f4c 75%,#99721d 100%);
+}
+
+body{
+  transition: 1.0s ;
+  /* background:rgb(124, 94, 55); */
+  background:rgb(102, 71, 42);
+}
+
+#scroll {
+  width:94vw;
+  height:6000px;
+  position:absolute;
+  top:0;
+  left:3vw;
+  background-color: rgb(77,56,36);
+  z-index:-1;
+}
+
 canvas {
   position: fixed;
-  left: 0;
+  left: 3vw;
   top: 0;
   z-index: -1;
 }
 #main {
-  min-height: 9999px;
+  min-height: 6000px;
   line-height: 200%;
 }
+
+.parallax1 {
+  margin-top: 1000px;
+  /* position: fixed; */
+  /* top: 300px;
+  width: 300px;
+  height: auto;
+  z-index: -1; */
+}
+
+.parallax2 {
+  position: fixed;
+  right: 200px;
+  top: 100px;
+  width: 300px;
+  height: auto;
+  z-index: -1;
+}
+
+/* .fluff {
+  /* opacity:0.5; */
+*/
+
+/* .item1 {
+  width:5vw;
+  position:absolute;
+  top:2000px;
+  z-index:5;
+}
+
+.item2 {
+  width:10vw;
+  position:absolute;
+  top:2000px;
+  left:20vw;
+  opacity:0.5;
+} */

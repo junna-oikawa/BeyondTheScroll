@@ -1,3 +1,6 @@
+let w;
+let h;
+
 let springSound;
 let musicBox;
 let cnv;
@@ -10,12 +13,34 @@ let Ytop;
 let img = [];
 let catimg = [];
 let alpha = 0;
+let alpha2 = 255;
+let alpha3 = 0;
 let size;
-let n = 0;
+
+let fluffX = [];
+let fluffY = [];
+let fluffSpeed = [];
+
+let f = [];
+let fluff;
+let fluffplus = [];
+
+let speedOfCat = 0;
+let catNumber = 0;
+
+let a = 0;
 
 let light;
 
+let fluffs = [];
+
+let title;
+let titleSize = 1;
+
+let topSize = 0;
+
 function preload() {
+  title = loadImage('image/title.png');
   springSound = loadSound('mp3/spring.mp3');
   musicBox = loadSound('mp3/musicbox.mp3');
 
@@ -25,7 +50,8 @@ function preload() {
   for (var i = 0; i < 20; i++) {
     catimg[i] = loadImage('image/cat2/'+[i+1] +'-min.png');
   }
-  light = loadImage('image/light.png');
+  light = loadImage('image/shadow.png');
+  fluff = loadImage('image/white2.png');
   //catimg[0] = loadImage('image/cat/1.png');
 }
 
@@ -34,77 +60,199 @@ function touchStarted() {
 }
 
 function setup() {
+
   cnv = createCanvas(window.innerWidth, window.innerHeight);
-  
   
   imageMode(CENTER);
   image(img[0], window.innerWidth/2, window.innerHeight/2 - window.innerWidth*0.1, window.innerWidth, window.innerWidth/1.8);
   loop();
   setTimeout(setComparison,30);
+  noStroke();
 
+  window.scrollTo(0,1200);
+
+  for(var i=0; i<100; i++) {
+    fluffX[i] = random(0, window.width);
+    fluffY[i] = random(-21000,0);
+    f[i] = random(12, 20);
+  }
+  //大きいfluff
+  for(var i=100; i<120; i++) {
+    fluffX[i] = random(0, window.width);
+    fluffY[i] = random(-21000, -100);
+    f[i] = random(1, 5);
+  }
+  for(var i=220; i<240; i++) {
+    fluffX[i] = random(0, window.width);
+    fluffY[i] = random(-21000, -100);
+    fluffSpeed[i] = random(1,4);
+    f[i] = random(0.5, 1);
+  }
+
+  for(var i=120; i<220; i++) {
+    fluffX[i] = random(0, window.width);
+    fluffY[i] = random(-21000,-100);
+    f[i] = random(20, 80);
+  }
+}
+function draw() {
+  
+  // document.getElementsByID("fluff").style.top = "1000px";
+  clear();
+  // document.queryElementById('scroll').style.backgroundColor = 'white'
+  let scrollY = window.scrollY;
+  Y = floor(scrollY)- 1950;
+  // background(255);
+
+  w = window.innerWidth;
+  h = window.innerHeight;
+
+  if (scrollY >=1800) {
+    scrollMain();
+  }else if(scrollY >=800){
+    drawtop();
+  }else{
+    drawTitle();
+  }
+
+  // fill(255, 0, 0);
+  // textSize(50);
+  //(window.scrollY, 100, 100);
+
+  // fill(255,0,0);
+  // text(window.scrollY,100,100);
+
+}
+
+function drawTitle() {
+  if(scrollY>340) {
+    topSize = (scrollY-340)*5;
+  }
+  if(topSize >= w){
+    topSize = w;
+  }
+  background(255);
+  image(title, w/2-w/20, h/2,titleSize,titleSize/4);
+  // image(img[0], w/2, h/2- w*0.1, topSize, topSize/1.8);
+  titleSize = scrollY*40;
+  if(titleSize <= 800) {
+    titleSize =800;
+  }
+  fill(255,255, 255,alpha3);
+  rect(0,0,w,h);
+
+  if(scrollY>=500) {
+    alpha3 = (scrollY-500);
+    if(alpha3>=255){
+      alpha3 = 255;
+    }
+  }
   
 }
 
 
-function draw() {
-  let scrollY = window.scrollY;
-  Y = floor(scrollY)- 600;
-  background(255);
 
-  let w = window.innerWidth;
-  let h = window.innerHeight;
-  Ytop = floor(scrollY);
-//   image(img[1], 0, 0);
+function drawtop() {
+  background(255);
+  document.body.style.backgroundColor = "white";
+  Ytop = floor(scrollY-1200);
+
+  image(img[0], w/2, h/2- w*0.1, size, size/1.8);
 
   for( var i = 0; i <62; i++) {
     if(Ytop >= i*10) {
      image(img[i], w/2, h/2- w*0.1, size, size/1.8);
-     //filter(BLUR, 0);
     }
   }
   //print(Ytop);
 
-  if ( Ytop >= 230 ){
-    alpha = Ytop - 230;
-    // size = w + (Ytop - 230)*5;
+  if ( Ytop >= 270 ){
+    alpha = Ytop - 270;
   } else {
       alpha = 0;
-      //size = w;
   }
 
-  if (Ytop >=300 ) {
-    size = w + (Ytop - 300)*5;
+  if (Ytop >=340 ) {
+    size = w + (Ytop - 340)*5;
   } else {
     size = w;
   }
   fill(255, 255, 255, alpha);
   rect(0, 0, window.innerWidth, window.innerHeight);
 
-  fill(0);
-  textSize(50);
-  text(Y, 100, 100);
+  fill(255,255, 255,alpha3);
+  rect(0,0,w,h);
 
-  if (scrollY >=600) {
-    scrollMain();
+  if(scrollY>=800) {
+    alpha3 = 255 - (scrollY-800);
+    if(alpha3<=0){
+      alpha3 = 0;
+    }
   }
 
-  if (Y >0){  
-    n = Y%20;
-    print(n);
-    background(0);
-    
-    //image(img[0], w/2, h/2- w*0.1, w, w/1.8);
-    // image(light, w/2, h-w/8, w/2, w/2);
-    // image(catimg[n], w/2, h-w/8, w/3, w/3);
-    image(light, w/2, h/2, w/2, w/2);
-    image(catimg[n], w/2, h/2, w/4, w/4);
-  }
-  // image(catimg[20], w/2, h/2 - w*0.1, w/4, w/4);
+    volume -= 0.03;
+    if (volume <= 0) {
+      volume = 0;
+    }
+
+    musicBox.stop();
 }
+
+
 
 function scrollMain() {
   comapare();
   playMusicSound();
+  setvisual();
+
+  fill(255, 255, 255, alpha2);
+  rect(0, 0, window.innerWidth, window.innerHeight);
+  alpha2 = 255- (scrollY-1800)*2;
+  if(alpha2 <=0) {
+    alpha2 = 0;
+  }
+}
+
+function setvisual() {
+
+  // var p = document.getElementById('scroll');
+  // p.style.backgroundColor = 'rgb(77,56,36)';
+  document.body.style.backgroundColor = "rgb(102, 71, 42)";
+  if (scrollY >1199){  
+    // background(77,56,36)
+    drawBackFluff();
+    image(light, w/2, h/2+h/6, w/2, w/3);
+
+    speedOfCat += a;
+    catNumber = floor(speedOfCat % 20);
+    //scale(-1,1);
+    
+    image(catimg[catNumber], w/2, h/2, w/4, w/4);
+    drawFrontFluff();
+  }
+
+}
+
+function drawBackFluff() {
+  for(var i=0; i<100; i++){
+    fluffplus[i] = fluffY[i] + Y*20/f[i];
+    image(fluff, fluffX[i], fluffplus[i], w/f[i], w/f[i]);
+  }
+  for(var i=120; i<220; i++){
+    fluffplus[i] = fluffY[i] + Y*20/f[i];
+    image(fluff, fluffX[i], fluffplus[i], w/f[i], w/f[i]);
+  }
+}
+
+function drawFrontFluff() {
+  for(var i=100; i<=120; i++){
+    fluffplus[i] = fluffY[i] + Y*20/f[i];
+    image(fluff, fluffX[i], fluffplus[i], w/f[i], w/f[i]);
+  }
+  for(var i=220; i<=225; i++){
+    fluffplus[i] = fluffY[i] + Y*20/f[i];
+    image(fluff, fluffX[i], fluffplus[i], w/f[i], w/f[i]);
+  }
 }
 
 function playMusicSound() {
@@ -126,31 +274,44 @@ function setComparison() {
 function comapare() {
   // volume++;
   //print(volume);
-  if (Y <= comparisonY && Y > 0) {
+  if (Y <= comparisonY && Y > 1) {
     u = u-0.5;
+    a+=0.001;
+    if(a>=0.2) {
+      a=0.2;
+    }
+    //print(a);
     if(u <= 0) {
       u = 0;
     }
     //print(u);
-    window.scrollTo(0,u+600);
+    window.scrollTo(0,u+1950);
     volume += 0.005;
     if (volume >= 1) {
       volume = 1;
     }
     springSound.stop();
-  } else if (Y > comparisonY){
+  } else if (Y > comparisonY || scrollY < 1950){
     u = Y;
+    a-=0.005;
+    if(a<=0){
+      a=0;
+    }
     volume -= 0.03;
     if (volume <= 0) {
       volume = 0;
     }
-    if(springSound.isPlaying() == false && Y!=0){
+    if(springSound.isPlaying() == false && Y!=1){
       springSound.play();
     }
-  } else if (Y <= 0) {
+  } else if (Y <= 1) {
     springSound.stop();
     u = Y;
     volume -= 0.005;
+    a-=0.001;
+    if(a<=0){
+      a=0;
+    }
     if (volume <= 0) {
       volume = 0;
     }
@@ -162,3 +323,4 @@ function comapare() {
 
 //音の設定
 //<https://himco.jp/2020/01/04/3%EF%BC%9A%E3%82%B5%E3%82%A6%E3%83%B3%E3%83%89%E3%81%AE%E5%86%8D%E7%94%9F-p5-sound-js-%E3%82%B5%E3%82%A6%E3%83%B3%E3%83%89/>
+
