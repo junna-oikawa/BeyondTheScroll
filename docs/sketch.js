@@ -31,7 +31,6 @@ let catNumber = 0;
 let a = 0;
 
 let light;
-
 let fluffs = [];
 
 let title;
@@ -52,7 +51,6 @@ function preload() {
   }
   light = loadImage('image/shadow.png');
   fluff = loadImage('image/white2.png');
-  //catimg[0] = loadImage('image/cat/1.png');
 }
 
 function touchStarted() {
@@ -69,18 +67,24 @@ function setup() {
   setTimeout(setComparison,30);
   noStroke();
 
+  //開始時は1200の位置へ
   window.scrollTo(0,1200);
 
+  //fluffのサイズ指定
   for(var i=0; i<100; i++) {
     fluffX[i] = random(0, window.width);
     fluffY[i] = random(-21000,0);
     f[i] = random(12, 20);
   }
-  //大きいfluff
   for(var i=100; i<120; i++) {
     fluffX[i] = random(0, window.width);
     fluffY[i] = random(-21000, -100);
     f[i] = random(1, 5);
+  }
+  for(var i=120; i<220; i++) {
+    fluffX[i] = random(0, window.width);
+    fluffY[i] = random(-21000,-100);
+    f[i] = random(20, 80);
   }
   for(var i=220; i<240; i++) {
     fluffX[i] = random(0, window.width);
@@ -88,25 +92,16 @@ function setup() {
     fluffSpeed[i] = random(1,4);
     f[i] = random(0.5, 1);
   }
-
-  for(var i=120; i<220; i++) {
-    fluffX[i] = random(0, window.width);
-    fluffY[i] = random(-21000,-100);
-    f[i] = random(20, 80);
-  }
 }
 function draw() {
-  
-  // document.getElementsByID("fluff").style.top = "1000px";
   clear();
-  // document.queryElementById('scroll').style.backgroundColor = 'white'
   let scrollY = window.scrollY;
   Y = floor(scrollY)- 1950;
-  // background(255);
 
   w = window.innerWidth;
   h = window.innerHeight;
 
+  //場面の切り替え
   if (scrollY >=1800) {
     scrollMain();
   }else if(scrollY >=800){
@@ -114,14 +109,6 @@ function draw() {
   }else{
     drawTitle();
   }
-
-  // fill(255, 0, 0);
-  // textSize(50);
-  //(window.scrollY, 100, 100);
-
-  // fill(255,0,0);
-  // text(window.scrollY,100,100);
-
 }
 
 function drawTitle() {
@@ -133,7 +120,6 @@ function drawTitle() {
   }
   background(255);
   image(title, w/2-w/20, h/2,titleSize,titleSize/4);
-  // image(img[0], w/2, h/2- w*0.1, topSize, topSize/1.8);
   titleSize = scrollY*40;
   if(titleSize <= 800) {
     titleSize =800;
@@ -147,10 +133,7 @@ function drawTitle() {
       alpha3 = 255;
     }
   }
-  
 }
-
-
 
 function drawtop() {
   background(255);
@@ -164,15 +147,25 @@ function drawtop() {
      image(img[i], w/2, h/2- w*0.1, size, size/1.8);
     }
   }
-  //print(Ytop);
 
+  //白から出ていく
+  if(scrollY>=800) {
+    alpha3 = 255 - (scrollY-800);
+    if(alpha3<=0){
+      alpha3 = 0;
+    }
+  }
+  fill(255,255, 255,alpha3);
+  rect(0,0,w,h);
+
+  //画面白くしていく
   if ( Ytop >= 270 ){
     alpha = Ytop - 270;
   } else {
       alpha = 0;
   }
-
-  if (Ytop >=340 ) {
+  //オルゴール大きくしていく
+  if (Ytop >= 340 ) {
     size = w + (Ytop - 340)*5;
   } else {
     size = w;
@@ -180,22 +173,8 @@ function drawtop() {
   fill(255, 255, 255, alpha);
   rect(0, 0, window.innerWidth, window.innerHeight);
 
-  fill(255,255, 255,alpha3);
-  rect(0,0,w,h);
-
-  if(scrollY>=800) {
-    alpha3 = 255 - (scrollY-800);
-    if(alpha3<=0){
-      alpha3 = 0;
-    }
-  }
-
-    volume -= 0.03;
-    if (volume <= 0) {
-      volume = 0;
-    }
-
-    musicBox.stop();
+  //オルゴールは鳴らさない
+  musicBox.stop();
 }
 
 
@@ -205,6 +184,7 @@ function scrollMain() {
   playMusicSound();
   setvisual();
 
+  //一面,白からスタート
   fill(255, 255, 255, alpha2);
   rect(0, 0, window.innerWidth, window.innerHeight);
   alpha2 = 255- (scrollY-1800)*2;
@@ -214,23 +194,16 @@ function scrollMain() {
 }
 
 function setvisual() {
-
-  // var p = document.getElementById('scroll');
-  // p.style.backgroundColor = 'rgb(77,56,36)';
   document.body.style.backgroundColor = "rgb(102, 71, 42)";
-  if (scrollY >1199){  
-    // background(77,56,36)
+  if (scrollY >1199){ 
     drawBackFluff();
     image(light, w/2, h/2+h/6, w/2, w/3);
 
     speedOfCat += a;
     catNumber = floor(speedOfCat % 20);
-    //scale(-1,1);
-    
     image(catimg[catNumber], w/2, h/2, w/4, w/4);
     drawFrontFluff();
   }
-
 }
 
 function drawBackFluff() {
@@ -272,19 +245,15 @@ function setComparison() {
 }
 
 function comapare() {
-  // volume++;
-  //print(volume);
   if (Y <= comparisonY && Y > 1) {
     u = u-0.5;
     a+=0.001;
     if(a>=0.2) {
       a=0.2;
     }
-    //print(a);
     if(u <= 0) {
       u = 0;
     }
-    //print(u);
     window.scrollTo(0,u+1950);
     volume += 0.005;
     if (volume >= 1) {
