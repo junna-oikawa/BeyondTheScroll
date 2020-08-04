@@ -38,6 +38,8 @@ let titleSize = 1;
 
 let topSize = 0;
 
+let onoff = "off";
+
 function preload() {
   title = loadImage('image/title.png');
   springSound = loadSound('mp3/spring.mp3');
@@ -59,10 +61,10 @@ function touchStarted() {
 
 function setup() {
 
-  cnv = createCanvas(window.innerWidth, window.innerHeight);
+  cnv = createCanvas(window.innerWidth*0.95, window.innerHeight);
   
   imageMode(CENTER);
-  image(img[0], window.innerWidth/2, window.innerHeight/2 - window.innerWidth*0.1, window.innerWidth, window.innerWidth/1.8);
+  image(img[0], window.innerWidth*0.95/2, window.innerHeight/2 - window.innerWidth*0.95*0.1, window.innerWidth*0.95, window.innerWidth*0.95/1.8);
   loop();
   setTimeout(setComparison,30);
   noStroke();
@@ -98,7 +100,7 @@ function draw() {
   let scrollY = window.scrollY;
   Y = floor(scrollY)- 1950;
 
-  w = window.innerWidth;
+  w = window.innerWidth*0.95;
   h = window.innerHeight;
 
   //場面の切り替え
@@ -148,6 +150,11 @@ function drawtop() {
     }
   }
 
+  fill(100,100,100);
+  textSize(20);
+  textAlign(CENTER);
+  text("画面をクリックしてください。 Sound : " + onoff, w/2, w/2+w/15);
+
   //白から出ていく
   if(scrollY>=800) {
     alpha3 = 255 - (scrollY-800);
@@ -171,13 +178,17 @@ function drawtop() {
     size = w;
   }
   fill(255, 255, 255, alpha);
-  rect(0, 0, window.innerWidth, window.innerHeight);
+  rect(0, 0, window.innerWidth*0.95, window.innerHeight);
 
   //オルゴールは鳴らさない
   musicBox.stop();
+
+  
 }
 
-
+function mouseClicked() {
+  onoff = "on";
+}
 
 function scrollMain() {
   comapare();
@@ -186,10 +197,14 @@ function scrollMain() {
 
   //一面,白からスタート
   fill(255, 255, 255, alpha2);
-  rect(0, 0, window.innerWidth, window.innerHeight);
+  rect(0, 0, window.innerWidth*0.95, window.innerHeight);
   alpha2 = 255- (scrollY-1800)*2;
   if(alpha2 <=0) {
     alpha2 = 0;
+  }
+
+  if(scrollY <= 1950){
+    springSound.stop();
   }
 }
 
