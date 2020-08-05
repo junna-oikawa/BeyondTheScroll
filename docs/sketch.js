@@ -153,7 +153,7 @@ function drawtop() {
   fill(100,100,100);
   textSize(20);
   textAlign(CENTER);
-  text("画面をクリックしてください。 Sound : " + onoff, w/2, w/2+w/15);
+  text("画面をクリックしてください。 Sound : " + onoff, w/2, h-h/20);
 
   //白から出ていく
   if(scrollY>=800) {
